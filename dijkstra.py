@@ -1,5 +1,4 @@
 import time
-import numpy as np
 
 from map import Map
 
@@ -90,7 +89,7 @@ class Dijkstra:
             for edge in curr_edges:
                 if edge in unvisited:
                     if edge[0] != current[0] and edge[1] != current[1]: # diagonal edge
-                        new_distance = distances[current] + np.sqrt(2)
+                        new_distance = distances[current] + 2**0.5
                     else: # straight edge
                         new_distance = distances[current] + 1
 
