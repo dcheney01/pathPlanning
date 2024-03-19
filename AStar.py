@@ -83,8 +83,8 @@ class AStar:
 
 
 if __name__ == "__main__":
-    map = Map(50, 50)
-    map.generate_random_obstacles(30)
+    map = Map(100, 100)
+    map.generate_random_obstacles(50)
     map.generate_random_start()
     map.generate_random_goal()
 
@@ -100,3 +100,7 @@ if __name__ == "__main__":
     print(f"Solve Time: {solveTime} seconds")
 
     map.display_map(path)
+
+    """
+    A* scales much better than djikstra's. 100x100 takes around 0.15 s and 1000x1000 takes around 3.886 s. Overall much faster too.
+    """
