@@ -84,14 +84,14 @@ class AStar:
 
 if __name__ == "__main__":
     map = Map(100, 100)
-    map.generate_random_obstacles(50)
+    map.generate_random_obstacles(100)
     map.generate_random_start()
     map.generate_random_goal()
-
 
     print(f"Start: {map.start}")
     print(f"Goal: {map.goal}")
 
+    map.display_map()
     astar = AStar()
     path, solveTime = astar.solvePath(map, map.start, map.goal)
 
