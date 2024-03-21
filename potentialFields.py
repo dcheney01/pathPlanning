@@ -23,9 +23,10 @@ class PotentialFields:
         force = 0
         for i in range(-dist_to_check, dist_to_check):
             for j in range(-dist_to_check, dist_to_check):
-                if (i == 0 and j == 0) or (position[0]+i > map.width-1) or (position[1]+j > map.height-1) or (position[0]+i < 0) or (position[1]+j < 0):
+                if (i == 0 and j == 0) or (position[0]+i > map.width-1) or (position[1]+j > map.height-1) or (position[0]+i < 0) or (position[1]+j < 0) \
+                    or (map.grid[position[0] + i, position[1] + j] == 0):
                     continue
-                force += map.grid[position[0] + i, position[1] + j] * C * (1/((i**2 + j**2)**0.5) - 1/R) * (1/((i**2 + j**2)**0.5))
+                force += C * (1/((i**2 + j**2)**0.5) - 1/R) * (1/((i**2 + j**2)**0.5))
 
         return force
 
@@ -54,7 +55,7 @@ class PotentialFields:
             next_node = None
             for i in range(-1, 2):
                 for j in range(-1, 2):
-                    if map.is_valid_position(x+i, y+j):
+                    if map.is_valid_position(x+i, y+j):  #TODO need to make this work if it hits  a local minimum
                         if potentials[(x+i, y+j)] < min_potential:
                             min_potential = potentials[(x+i, y+j)]
                             next_node = (x+i, y+j)
@@ -68,6 +69,8 @@ if __name__ == "__main__":
     map.generate_random_obstacles(30)
     map.generate_random_start()
     map.generate_random_goal()
+
+    map.display_map()
 
     pf = PotentialFields()
     path, solveTime = pf.solvePath(map, map.start, map.goal)
