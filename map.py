@@ -67,21 +67,26 @@ class Map:
         """Check if the position is within the map boundaries and not an obstacle."""
         return 0 <= x < self.width and 0 <= y < self.height and self.grid[y, x] == 0
 
-    def display_map(self, path=None):
-        """Display the map with obstacles, start, and goal."""
-        plt.imshow(self.grid, cmap='Greys', origin='lower')
-        plt.plot(*self.start, 'rs', markersize=4)
-        plt.plot(*self.goal, 'bs', markersize=4)
-        if path:
-            for i in range(len(path)-1):
-                plt.plot([path[i][0], path[i+1][0]], [path[i][1], path[i+1][1]], 'r')
-        plt.legend(['Start', 'Goal'])
-        # grid one by one boxes on the plot
-        plt.xticks(np.arange(0, self.width, 1))
-        plt.yticks(np.arange(0, self.height, 1))
-        plt.grid()
-        plt.show()
-
+    def display_map(self, path=None, return_fig=False):
+        """Display the map with the obstacles, start, goal, and path."""
+        fig, ax = plt.subplots()
+        ax.imshow(self.grid, cmap='Greys', origin='upper')
+        ax.set_xticks(np.arange(-0.5, self.width, 1))
+        ax.set_yticks(np.arange(-0.5, self.height, 1))
+        ax.set_xticklabels([])
+        ax.set_yticklabels([])
+        ax.grid()
+        ax.plot(self.start[0], self.start[1], 'rs', markersize=4)
+        ax.plot(self.goal[0], self.goal[1], 'bs', markersize=4)
+        ax.legend(['Start', 'Goal'])
+        if path is not None:
+            path = np.array(path)
+            ax.plot(path[:, 0], path[:, 1], 'b', linewidth=2)
+        if return_fig:
+            return ax
+        else:
+            plt.show()
+            
 if __name__ == "__main__":
     map_width = 100
     map_height = 100

@@ -36,12 +36,13 @@ class AStar:
         self.neighborCombos = [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]
 
 
-    def solveAStar(self, map, start, goal):
+    def solveAStar(self, map, start, goal, iterations=5000):
         startNode = Node(None, start)
         openList = [startNode]
         closedList = []
+        count = 0
 
-        while len(openList) > 0:
+        while len(openList) > 0 and count < iterations:
             currentNode = min(openList)
             openList.remove(currentNode)
 
@@ -65,12 +66,20 @@ class AStar:
                                     continue
 
                         openList.append(neighborNode)
+            count += 1
 
             closedList.append(currentNode)
+
+        return None
 
     def solvePath(self, map, start, goal):
         startTime = time.time()
         goalNode = self.solveAStar(map, start, goal)
+
+        if goalNode is None:
+            print("Astar could not find a path in 5000 iterations")
+            return None, time.time() - startTime
+        
         path = []
         currentNode = goalNode
         while currentNode is not None:
@@ -84,19 +93,20 @@ class AStar:
 
 if __name__ == "__main__":
     map = Map(100, 100)
-    map.generate_random_obstacles(100)
+    map.generate_random_obstacles(200)
     map.generate_random_start()
     map.generate_random_goal()
 
     print(f"Start: {map.start}")
     print(f"Goal: {map.goal}")
 
-    map.display_map()
+    # map.display_map()
     astar = AStar()
     path, solveTime = astar.solvePath(map, map.start, map.goal)
 
-    print(path)
-    print(f"Num Moves: {len(path)}")
+    if path is not None:
+        print(path)
+        print(f"Num Moves: {len(path)}")
     print(f"Solve Time: {solveTime} seconds")
 
     map.display_map(path)

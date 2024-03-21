@@ -72,7 +72,7 @@ class Dijkstra:
             path.append(current)
         return path[::-1]
 
-    def solvePath(self, map, start, goal):
+    def solvePath(self, map, start, goal, iterations=10000):
         startTime = time.time()
 
         nodes = self._get_nodes(map)
@@ -81,8 +81,9 @@ class Dijkstra:
 
         unvisited = set(nodes)
         current = start
+        count = 0
 
-        while current != goal:
+        while current != goal and count < iterations:
             unvisited.remove(current)
 
             curr_edges = edges[current]
@@ -101,15 +102,21 @@ class Dijkstra:
                 if distances[node] < min_distance:
                     min_distance = distances[node]
                     current = node
+            
+            count += 1
 
+        if count == iterations:
+            print("Dijkstra did not find a path in ", iterations, " iterations")
+            return [], 0
+        
         path = self._get_path_from_solve(start, goal, edges, distances)
         solveTime = time.time() - startTime
 
         return path, solveTime
     
 if __name__ == "__main__":
-    map = Map(50, 50)
-    map.generate_random_obstacles(30)
+    map = Map(100, 100)
+    map.generate_random_obstacles(50)
     map.generate_random_start()
     map.generate_random_goal()
 
@@ -118,7 +125,10 @@ if __name__ == "__main__":
     print("Number of Steps: ", len(path))
     print("Solve Time: ", solveTime, " s")
 
-    map.display_map(path)
+    if len(path) == 0:
+        map.display_map()
+    else:
+        map.display_map(path)
 
     """ 
     Scales pretty poorly (solving a 50x50 map taks ~0.6 s while a 100x100 map takes ~ 13.5 s)

@@ -1,6 +1,10 @@
 # pathPlanning
 
+Repository to demonstrate different path planning methods in a grid based environment. Each algorithm is given a starting location, a goal, and a map with obstacles to avoid.
+
 Todos:
-* jupyter notebokk to compare the algorithms on the same map/obstacles
-* add different parameters to make the algorithms more robust (find the best path after certain number of iterations if there is no path)
+
+* Make the search algorithms more robust to situations where there is no path
+* Make the search algorithms more robust when there is a path, it might just be harder to find (tune, use different heuristics, etc.)
 * Visualize the algorithms while they are path planning
+* Add BFS, DFS, and RRT search algorithms
